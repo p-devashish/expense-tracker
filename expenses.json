@@ -1,0 +1,20 @@
+[
+    {
+        "id": 2,
+        "notes": "cab ride to airport",
+        "amount": 500.0,
+        "datetime": "2026-02-02T06:23:00+00:00"
+    },
+    {
+        "id": 3,
+        "notes": "late night snacks",
+        "amount": 180.0,
+        "datetime": "2026-01-20T20:28:00+00:00"
+    },
+    {
+        "id": 4,
+        "notes": "fuel",
+        "amount": 370.0,
+        "datetime": "2026-02-02T18:24:00+00:00"
+    }
+]

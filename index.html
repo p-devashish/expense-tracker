@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenso</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #2d1810;
+            color: #d7ccc8;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #d7ccc8;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+        .logo {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-card {
+            background-color: #3e2723;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #a1887f;
+            font-weight: 500;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #5d4037;
+            border-radius: 6px;
+            box-sizing: border-box;
+            background-color: #4e342e;
+            color: #d7ccc8;
+            font-size: 14px;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #8d6e63;
+        }
+        .add-expense-btn {
+            background-color: #6d4c41;
+            color: #d7ccc8;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        .add-expense-btn:hover {
+            background-color: #5d4037;
+        }
+        .expense-list {
+            margin-top: 20px;
+        }
+        .month-group {
+            margin-bottom: 20px;
+        }
+        .month-header {
+            background-color: #4e342e;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #ffab91;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .month-total {
+            color: #ffab91;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 40px;
+        }
+        .expense-card {
+            background-color: #4e342e;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .expense-info {
+            flex-grow: 1;
+        }
+        .expense-amount {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffab91;
+            margin-right: 40px;
+        }
+        .expense-notes {
+            color: #bcaaa4;
+            font-size: 14px;
+        }
+        .expense-datetime {
+            color: #8d6e63;
+            font-size: 12px;
+        }
+        .no-expenses {
+            text-align: center;
+            color: #bcaaa4;
+            font-style: italic;
+            padding: 50px 20px;
+            font-size: 16px;
+        }
+        .expense-card {
+            position: relative;
+        }
+        .expense-menu {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            color: #bcaaa4;
+        }
+        .menu-options {
+            display: none;
+            position: absolute;
+            top: 30px;
+            right: 0;
+            background-color: #4e342e;
+            border: 1px solid #5d4037;
+            border-radius: 6px;
+            z-index: 10;
+            min-width: 80px;
+        }
+        .menu-options.show {
+            display: block;
+        }
+        .menu-option {
+            padding: 8px 12px;
+            color: #d7ccc8;
+            cursor: pointer;
+            border-bottom: 1px solid #5d4037;
+        }
+        .menu-option:last-child {
+            border-bottom: none;
+        }
+        .menu-option:hover {
+            background-color: #6d4c41;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 20;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background-color: #3e2723;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        .modal-content h2 {
+            margin-top: 0;
+            color: #d7ccc8;
+        }
+        .modal-content .form-group {
+            margin-bottom: 15px;
+        }
+        .modal-content label {
+            color: #a1887f;
+        }
+        .modal-content input, .modal-content textarea {
+            background-color: #4e342e;
+            border: 1px solid #5d4037;
+            color: #d7ccc8;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .modal-btn.cancel {
+            background-color: #bcaaa4;
+            color: #2d1810;
+        }
+        .modal-btn.update {
+            background-color: #6d4c41;
+            color: #d7ccc8;
+        }
+        .notification {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #4e342e;
+            color: #d7ccc8;
+            padding: 10px 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            z-index: 30;
+            max-width: 300px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .notification.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .notification.hide {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .notification-bar {
+            height: 3px;
+            background-color: #ffab91;
+            width: 100%;
+            animation: progress 4s linear;
+        }
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span class="logo">💰</span>Expenso</h1>
+        <div class="form-card">
+            <div class="form-group">
+                <label for="notes">Notes:</label>
+                <textarea id="notes" rows="3" placeholder="Enter remarks for the expense"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="amount">Amount (₹):</label>
+                <input type="number" id="amount" step="0.01" min="0" placeholder="Enter amount in rupees">
+            </div>
+            <div class="form-group">
+                <label for="datetime">Date and Time:</label>
+                <input type="datetime-local" id="datetime">
+            </div>
+        </div>
+        <button class="add-expense-btn" id="add-expense">Add Expense</button>
+        <div class="expense-list" id="expense-list">
+            <!-- Expenses will be listed here -->
+        </div>
+    </div>
+
+    <!-- Modal for editing -->
+    <div class="modal" id="edit-modal">
+        <div class="modal-content">
+            <h2>Edit Expense</h2>
+            <div class="form-group">
+                <label for="edit-notes">Notes:</label>
+                <textarea id="edit-notes" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="edit-amount">Amount (₹):</label>
+                <input type="number" id="edit-amount" step="0.01" min="0">
+            </div>
+            <div class="form-group">
+                <label for="edit-datetime">Date and Time:</label>
+                <input type="datetime-local" id="edit-datetime">
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="cancel-edit">Cancel</button>
+                <button class="modal-btn update" id="update-expense">Update Expense</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div id="notification-message"></div>
+        <div class="notification-bar"></div>
+    </div>
+    <script>
+        const API_BASE = 'http://localhost:8003';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const notesInput = document.getElementById('notes');
+            const amountInput = document.getElementById('amount');
+            const datetimeInput = document.getElementById('datetime');
+            const addButton = document.getElementById('add-expense');
+            const expenseList = document.getElementById('expense-list');
+
+            // Set default datetime to current
+            const now = new Date();
+            const offset = now.getTimezoneOffset() * 60000;
+            const localISOTime = (new Date(now - offset)).toISOString().slice(0, -1);
+            datetimeInput.value = localISOTime.slice(0, 16);
+
+            function loadExpenses() {
+                fetch(`${API_BASE}/expenses`)
+                    .then(response => response.json())
+                    .then(expenses => renderExpenses(expenses))
+                    .catch(err => console.error('Error loading expenses:', err));
+            }
+
+            function renderExpenses(expenses) {
+                expenseList.innerHTML = '';
+                if (expenses.length === 0) {
+                    expenseList.innerHTML = '<div class="no-expenses">No expense added. Try adding one by pressing the \'Add Expense\' button.</div>';
+                    return;
+                }
+
+                // Sort expenses by datetime descending
+                expenses.sort((a, b) => new Date(b.datetime) - new Date(a.datetime));
+
+                // Group by month-year
+                const groups = {};
+                expenses.forEach(exp => {
+                    const dt = new Date(exp.datetime);
+                    const monthYear = `${dt.toLocaleString('default', { month: 'short' })}-${dt.getFullYear()}`;
+                    if (!groups[monthYear]) groups[monthYear] = { expenses: [], total: 0 };
+                    groups[monthYear].expenses.push(exp);
+                    groups[monthYear].total += exp.amount;
+                });
+
+                // Render groups
+                Object.keys(groups).forEach(monthYear => {
+                    const group = groups[monthYear];
+                    const groupDiv = document.createElement('div');
+                    groupDiv.className = 'month-group';
+                    groupDiv.innerHTML = `<div class="month-header">${monthYear}<span class="month-total">₹${group.total.toFixed(2)}</span></div>`;
+
+                    group.expenses.forEach(exp => {
+                        const item = document.createElement('div');
+                        item.className = 'expense-card';
+                        const dt = new Date(exp.datetime);
+                        item.innerHTML = `
+                            <div class="expense-info">
+                                <div class="expense-notes">${exp.notes}</div>
+                                <div class="expense-datetime">${dt.toLocaleString()}</div>
+                            </div>
+                            <div class="expense-amount">₹${exp.amount.toFixed(2)}</div>
+                            <div class="expense-menu" data-id="${exp.id}">⋮</div>
+                            <div class="menu-options" data-id="${exp.id}">
+                                <div class="menu-option edit-option" data-id="${exp.id}">✏️ Edit</div>
+                                <div class="menu-option delete-option" data-id="${exp.id}">🗑️ Delete</div>
+                            </div>
+                        `;
+                        groupDiv.appendChild(item);
+                    });
+
+                    expenseList.appendChild(groupDiv);
+                });
+
+                // Add event listeners for menus
+                document.querySelectorAll('.expense-menu').forEach(menu => {
+                    menu.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.dataset.id;
+                        // Hide all other menus
+                        document.querySelectorAll('.menu-options').forEach(opt => opt.classList.remove('show'));
+                        const options = document.querySelector(`.menu-options[data-id="${id}"]`);
+                        options.classList.toggle('show');
+                    });
+                });
+
+                document.querySelectorAll('.edit-option').forEach(opt => {
+                    opt.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        editExpense(id);
+                        document.querySelector(`.menu-options[data-id="${id}"]`).classList.remove('show');
+                    });
+                });
+
+                document.querySelectorAll('.delete-option').forEach(opt => {
+                    opt.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        deleteExpense(id);
+                        document.querySelector(`.menu-options[data-id="${id}"]`).classList.remove('show');
+                    });
+                });
+
+                // Close menus when clicking elsewhere
+                document.addEventListener('click', function() {
+                    document.querySelectorAll('.menu-options').forEach(opt => opt.classList.remove('show'));
+                });
+            }
+
+            let currentEditId = null;
+
+            function showNotification(message) {
+                const notification = document.getElementById('notification');
+                const messageDiv = document.getElementById('notification-message');
+                messageDiv.textContent = message;
+                notification.classList.remove('hide');
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.add('hide');
+                    setTimeout(() => {
+                        notification.classList.remove('show', 'hide');
+                    }, 300); // Wait for transition
+                }, 4000);
+            }
+
+            function editExpense(id) {
+                fetch(`${API_BASE}/expenses`)
+                    .then(response => response.json())
+                    .then(expenses => {
+                        const exp = expenses.find(e => e.id == id);
+                        if (exp) {
+                            document.getElementById('edit-notes').value = exp.notes;
+                            document.getElementById('edit-amount').value = exp.amount;
+                            const dt = new Date(exp.datetime);
+                            const offset = dt.getTimezoneOffset() * 60000;
+                            const localISOTime = (new Date(dt - offset)).toISOString().slice(0, -1);
+                            document.getElementById('edit-datetime').value = localISOTime.slice(0, 16);
+                            currentEditId = id;
+                            document.getElementById('edit-modal').classList.add('show');
+                        }
+                    });
+            }
+
+            function deleteExpense(id) {
+                if (confirm('Are you sure you want to delete this expense?')) {
+                    fetch(`${API_BASE}/expenses/${id}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            loadExpenses();
+                            showNotification('Expense deleted successfully');
+                        } else {
+                            alert('Error deleting expense');
+                        }
+                    });
+                }
+            }
+
+            loadExpenses();
+
+            addButton.addEventListener('click', function() {
+                const notes = notesInput.value.trim();
+                const amount = parseFloat(amountInput.value);
+                const datetime = datetimeInput.value;
+
+                if (!notes || isNaN(amount) || amount <= 0 || !datetime) {
+                    alert('Please fill all fields correctly.');
+                    return;
+                }
+
+                const data = {
+                    notes: notes,
+                    amount: amount,
+                    datetime: new Date(datetime).toISOString()
+                };
+
+                fetch(`${API_BASE}/expenses`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        notesInput.value = '';
+                        amountInput.value = '';
+                        const newNow = new Date();
+                        const newOffset = newNow.getTimezoneOffset() * 60000;
+                        const newLocalISOTime = (new Date(newNow - newOffset)).toISOString().slice(0, -1);
+                        datetimeInput.value = newLocalISOTime.slice(0, 16);
+                        loadExpenses();
+                        showNotification('Expense added successfully');
+                    } else {
+                        alert('Error adding expense');
+                    }
+                })
+                .catch(err => console.error('Error:', err));
+            });
+
+            // Modal events
+            document.getElementById('cancel-edit').addEventListener('click', function() {
+                document.getElementById('edit-modal').classList.remove('show');
+            });
+
+            document.getElementById('update-expense').addEventListener('click', function() {
+                const notes = document.getElementById('edit-notes').value.trim();
+                const amount = parseFloat(document.getElementById('edit-amount').value);
+                const datetime = document.getElementById('edit-datetime').value;
+
+                if (!notes || isNaN(amount) || amount <= 0 || !datetime) {
+                    alert('Please fill all fields correctly.');
+                    return;
+                }
+
+                const data = {
+                    notes: notes,
+                    amount: amount,
+                    datetime: new Date(datetime).toISOString()
+                };
+
+                fetch(`${API_BASE}/expenses/${currentEditId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('edit-modal').classList.remove('show');
+                        loadExpenses();
+                        showNotification('Expense updated successfully');
+                    } else {
+                        alert('Error updating expense');
+                    }
+                })
+                .catch(err => console.error('Error:', err));
+            });
+        });
+    </script>
+</body>
+</html>
